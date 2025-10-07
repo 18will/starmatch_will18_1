@@ -14,7 +14,7 @@
 // Credits:
 // Program: twobob
 // Engine: Will 18
-// algorithm version: 6.1
+// algorithm version: 6.2 - most recent changes since the twobob rewrite
 /* ******************************************************************************* */
 var rp = -1;	// ruling planet ( number )
 // AspectValues a: Conjunction, Opposition, Trine, Square, Sextile, Semi-square, Semi-sextile
