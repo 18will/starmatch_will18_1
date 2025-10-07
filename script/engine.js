@@ -295,16 +295,18 @@ var orbValue = 0;
 						orbValue = po[poIndex][signRuler];	// we don't have a planet orb for asc.
 					themeValue +=ps[signRuler]* weighting * aspectStrength ( planet[10], planet[signRuler], a[n], orbValue, af[n] );
 				}
-				
-				if ( themeNum != 1 )	// don't consider MC in Aries?
-				{
-					if ( orbType == 0 )	// aspect orbs
-						orbValue = ao[aoIndex][n];
-					else
-						orbValue = po[poIndex][signRuler];	// we don't have a planet orb for MC
-					if ( isAspect ( planet[11], planet[signRuler], a[n], ao[aoIndex][n] ) )	// signRuler/Midheaven aspect
-						themeValue += ps[signRuler]*weighting * aspectStrength ( planet[11], planet[signRuler], a[n], orbValue, af[n] );
-				}
+
+// will18_1 mod:
+// remove reference to MC entirely, probably not directly relationship-related				
+//				if ( themeNum != 1 )	// don't consider MC in Aries?
+//				{
+//					if ( orbType == 0 )	// aspect orbs
+//						orbValue = ao[aoIndex][n];
+//					else
+//						orbValue = po[poIndex][signRuler];	// we don't have a planet orb for MC
+//					if ( isAspect ( planet[11], planet[signRuler], a[n], ao[aoIndex][n] ) )	// signRuler/Midheaven aspect
+//						themeValue += ps[signRuler]*weighting * aspectStrength ( planet[11], planet[signRuler], a[n], orbValue, af[n] );
+//				}
 
 			}
 			theme[themeNum-1] += themeValue;	// allow for multiple calls
@@ -326,7 +328,10 @@ var orbValue = 0;
 		var numPlanets = 0;
 		var numStrong = 0;
 		/* Planetary positions */
-		var planet = [fSun,fMoon,fMercury,fVenus,fMars,fJupiter,fSaturn,fUranus,fNeptune,fPluto,fAscendant,fMidheaven];
+//		var planet = [fSun,fMoon,fMercury,fVenus,fMars,fJupiter,fSaturn,fUranus,fNeptune,fPluto,fAscendant,fMidheaven];
+// will18_1 mod:
+// removed refence to MC
+		var planet = [fSun,fMoon,fMercury,fVenus,fMars,fJupiter,fSaturn,fUranus,fNeptune,fPluto,fAscendant];
 	
 		// algorithm main starts here
 		var m,n,o;	// loop vars.
@@ -351,7 +356,10 @@ var orbValue = 0;
 	
 		// find number of polarities, triplicities, quadruplicities
 		//-ve, +ve, fire, earth, air, water, card, fix, mut totals
-		for ( n = 0; n <12; n++)	// for all planets, Asc., M.C.	
+//		for ( n = 0; n <12; n++)	// for all planets, Asc., M.C.	
+// will18_1 mod:
+// removed reference to MC
+		for ( n = 0; n <11; n++)	// for all planets, Asc.
 		{
 			k = signNum ( planet[n] )
 	
@@ -403,14 +411,25 @@ var orbValue = 0;
 		// for each planet, then for each aspect, if aspect, add 1
 		if ( orbType == 0)
 		{
-			for ( n = 0; n < 12; n++ )
-				for ( m = n+1; m < 12; m++ )
+//			for ( n = 0; n < 12; n++ )
+//				for ( m = n+1; m < 12; m++ )
+//					if ( n != m )
+//					{
+//						for ( o = 0; o < 7; o++ )	// aspect list
+//							if ( isAspect ( planet[n], planet[m], a[o], ao[aoIndex][o] ) )
+//								numAspects[o]++;
+//					}
+// will18_1 mod:
+// removed reference to MC
+			for ( n = 0; n < 11; n++ )
+				for ( m = n+1; m < 11; m++ )
 					if ( n != m )
 					{
 						for ( o = 0; o < 7; o++ )	// aspect list
 							if ( isAspect ( planet[n], planet[m], a[o], ao[aoIndex][o] ) )
 								numAspects[o]++;
 					}
+
 	
 		}
 	else
