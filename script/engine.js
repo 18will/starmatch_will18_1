@@ -30,7 +30,7 @@ var af = [1,0.5,0.3333,0.3536,0.2357,0.25,0.1667];	// FIXED
 /* orbType: 0 = aspect orbs (modern), 1 = planet orbs (ancient) */
 var orbType = 0;
 /* planet orbs: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto */
-/* the outer three are modern additions - no asc. or MC aspects considered*/
+/* the outer three are modern additions - no asc. or MC aspects considered */
 var po = [[15,12,7,7,7,9,9,5,5,5],[17,12.5,7,8,8,12,10,5,5,5]];
 /* poIndex = 0, 1 (Lilly, al-Biruni) */
 var poIndex = 0;
@@ -59,6 +59,8 @@ var numTradFactors = [0,0,0,0,0,0,0,0,0];	// totals for traditional factors. INT
 /* tfDominant: [polarity, triplicity, quadruplicity] - dominant pol., trip., quad. or -1 */
 var tfDominant = [0,0,0];	// INTERNAL
 /* planet strength [planetNum,...]  - arbitrary value for contribution to event occurrence */
+// will18_2 mod:
+// we should possibly remove psRT[11] since the MC is no longer used
 var psRT = [1,1,1,1,1,1,1,1,1,1,1,1];	// INTERNAL
 var precessionFlag = 0;	// true, precess position data before theme calculation
 var precessedTheme = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -336,6 +338,8 @@ var orbValue = 0;
 		// algorithm main starts here
 		var m,n,o;	// loop vars.
 		var k,tmp;
+// will18_2 mod:
+// possibly we should remove ps[11] as the MC is no longer used
 		var ps = [0,0,0,0,0,0,0,0,0,0,0,0];
 		// initialise theme array
 		for ( n = 0; n < 12; n++ )
