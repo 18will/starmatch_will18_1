@@ -9,7 +9,7 @@
 // Since it is a sensible and logical approach I have followed it here, with some
 // modifications.
 // Will 18, Jan. 2016.
-// wj18@talktalk.net
+// eighteenwill@gmail.com
 //
 // Credits:
 // Program: twobob
