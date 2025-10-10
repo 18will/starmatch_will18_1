@@ -116,7 +116,7 @@ var orbValue = 0;
 	}
 
 	// main algorithm
-	function getThemeValues(Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Uranus,Neptune,Pluto,Ascendant,Midheaven)
+	function getThemeValues(Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Uranus,Neptune,Pluto,Ascendant)
 	{
 		// functions internal to getThemeValues()
 		function numPlanetsInHouse ( houseNum )
@@ -326,7 +326,7 @@ var orbValue = 0;
 		var fNeptune = TidyUpAndFloat(Neptune);
 		var fPluto = TidyUpAndFloat(Pluto);
 		var fAscendant = TidyUpAndFloat(Ascendant);
-		var fMidheaven = TidyUpAndFloat(Midheaven);
+//		var fMidheaven = TidyUpAndFloat(Midheaven);
 		var numPlanets = 0;
 		var numStrong = 0;
 		/* Planetary positions */
@@ -338,8 +338,6 @@ var orbValue = 0;
 		// algorithm main starts here
 		var m,n,o;	// loop vars.
 		var k,tmp;
-// will18_2 mod:
-// possibly we should remove ps[11] as the MC is no longer used
 		var ps = [0,0,0,0,0,0,0,0,0,0,0,0];
 		// initialise theme array
 		for ( n = 0; n < 12; n++ )
@@ -415,14 +413,6 @@ var orbValue = 0;
 		// for each planet, then for each aspect, if aspect, add 1
 		if ( orbType == 0)
 		{
-//			for ( n = 0; n < 12; n++ )
-//				for ( m = n+1; m < 12; m++ )
-//					if ( n != m )
-//					{
-//						for ( o = 0; o < 7; o++ )	// aspect list
-//							if ( isAspect ( planet[n], planet[m], a[o], ao[aoIndex][o] ) )
-//								numAspects[o]++;
-//					}
 // will18_1 mod:
 // removed reference to MC
 			for ( n = 0; n < 11; n++ )
@@ -433,8 +423,6 @@ var orbValue = 0;
 							if ( isAspect ( planet[n], planet[m], a[o], ao[aoIndex][o] ) )
 								numAspects[o]++;
 					}
-
-	
 		}
 	else
 	{
@@ -448,7 +436,10 @@ var orbValue = 0;
 							numAspects[o]++;
 				}
 		for ( n = 0; n < 10; n++ )	// aspects from planets to Asc. and M.C.
-			for ( m = 10; m < 12; m++ )
+//			for ( m = 10; m < 12; m++ )
+// will18_3 mod
+// removed reference to MC (index=11)
+			for ( m = 10; m < 11; m++ )
 			{
 				orbValue = po[poIndex][n];
 				for ( o = 0; o < 7; o++ )
