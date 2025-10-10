@@ -60,7 +60,6 @@ var numTradFactors = [0,0,0,0,0,0,0,0,0];	// totals for traditional factors. INT
 var tfDominant = [0,0,0];	// INTERNAL
 /* planet strength [planetNum,...]  - arbitrary value for contribution to event occurrence */
 // will18_2 mod:
-// we should possibly remove psRT[11] since the MC is no longer used
 var psRT = [1,1,1,1,1,1,1,1,1,1,1,1];	// INTERNAL
 var precessionFlag = 0;	// true, precess position data before theme calculation
 var precessedTheme = [0,0,0,0,0,0,0,0,0,0,0,0];
