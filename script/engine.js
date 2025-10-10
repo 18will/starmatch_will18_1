@@ -116,11 +116,7 @@ var orbValue = 0;
 	}
 
 	// main algorithm
-//will18_3 mod
-// removed reference to Midheaven since this shuld not contribute to compatibility
-// and it is unused in this function
-//	function getThemeValues(Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Uranus,Neptune,Pluto,Ascendant,Midheaven)
-	function getThemeValues(Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Uranus,Neptune,Pluto,Ascendant)
+	function getThemeValues(Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Uranus,Neptune,Pluto,Ascendant,Midheaven)
 	{
 		// functions internal to getThemeValues()
 		function numPlanetsInHouse ( houseNum )
