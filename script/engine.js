@@ -31,10 +31,12 @@ var af = [1,0.5,0.3333,0.3536,0.2357,0.25,0.1667];	// FIXED
 var orbType = 0;
 /* planet orbs: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto */
 /* the outer three are modern additions - no asc. or MC aspects considered */
-var po = [[15,12,7,7,7,9,9,5,5,5],[17,12.5,7,8,8,12,10,5,5,5]];
-/* poIndex = 0, 1 (Lilly, al-Biruni) */
+var po = [[15,12,7,7,8,9,9,5,5,5],[17,12.5,7,8,7.5,12,10,5,5,5]];
+/* poIndex = 0, 1 (al-Biruni, Lilly) */
 var poIndex = 0;
-var ao = [[9,9,7,7,5,3,3],[9,9,9,9,6,2,3],[10.8,10.0,8.3,7.5,5.7,2.5,1.5],[10,8,6,6,4.5,1,1],[2.6,2.5,2.3,2.3,1.3,1,1]];
+/* ao index 0: modern, 1: modern(wide), 2: natal, 3: synastry, 4: transit */
+/* index data for index 2,3,4 from astrotheme.com/astrology_aspects */
+var ao = [[9,9,7,7,5,3,3],[9,9,9,9,6,2,3],[10.5,10.0,8.3,7.8,6.1,1.5,1.0],[10,8,6,6,4.5,1,1],[2.6,2.5,2.3,2.3,1.3,1,1]];
 var aoIndex = 0;
 /* Traditional factors (ancient/modern): [signNum[ruler],[exaltation],[detriment],[fall]] */
 /* tfIndex = 0 for ancient, 4 for modern, 8 for alternative modern (offset into array): USER-EXTENSIBLE */
@@ -47,7 +49,7 @@ var tf = [
 	// Alternative modern allocations (tfIndex 8-11) - added per ResearchOptions.txt
 	[4,3,2,1,0,2,3,9,5,6,7,8],[0,1,-1,8,5,2,6,7,-1,4,9,3],[3,9,5,6,7,8,4,3,2,1,0,2],[6,7,-1,4,-1,3,0,1,-1,8,-1,2]
 ];	// USER-DEFINABLE but need to be defaulted for 'Reset/OtherRules'
-var tfIndex = 0;
+var tfIndex = 4;
 /* Traditional factors:  [signNum[polarity],[triplicity],[quadruplicity]] */
 var ptq = [[1,0,1,0,1,0,1,0,1,0,1,0],[0,1,2,3,0,1,2,3,0,1,2,3],[0,1,2,0,1,2,0,1,2,0,1,2]];	// FIXED
 /* Theme values ( t[n] in algorithm ) */
@@ -60,6 +62,7 @@ var numTradFactors = [0,0,0,0,0,0,0,0,0];	// totals for traditional factors. INT
 var tfDominant = [0,0,0];	// INTERNAL
 /* planet strength [planetNum,...]  - arbitrary value for contribution to event occurrence */
 // will18_2 mod:
+// we should possibly remove psRT[11] since the MC is no longer used
 var psRT = [1,1,1,1,1,1,1,1,1,1,1,1];	// INTERNAL
 var precessionFlag = 0;	// true, precess position data before theme calculation
 var precessedTheme = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -115,7 +118,7 @@ var orbValue = 0;
 	}
 
 	// main algorithm
-	function getThemeValues(Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Uranus,Neptune,Pluto,Ascendant)
+	function getThemeValues(Sun,Moon,Mercury,Venus,Mars,Jupiter,Saturn,Uranus,Neptune,Pluto,Ascendant,Midheaven)
 	{
 		// functions internal to getThemeValues()
 		function numPlanetsInHouse ( houseNum )
@@ -325,7 +328,7 @@ var orbValue = 0;
 		var fNeptune = TidyUpAndFloat(Neptune);
 		var fPluto = TidyUpAndFloat(Pluto);
 		var fAscendant = TidyUpAndFloat(Ascendant);
-//		var fMidheaven = TidyUpAndFloat(Midheaven);
+		var fMidheaven = TidyUpAndFloat(Midheaven);
 		var numPlanets = 0;
 		var numStrong = 0;
 		/* Planetary positions */
@@ -337,6 +340,8 @@ var orbValue = 0;
 		// algorithm main starts here
 		var m,n,o;	// loop vars.
 		var k,tmp;
+// will18_2 mod:
+// possibly we should remove ps[11] as the MC is no longer used
 		var ps = [0,0,0,0,0,0,0,0,0,0,0,0];
 		// initialise theme array
 		for ( n = 0; n < 12; n++ )
@@ -412,6 +417,14 @@ var orbValue = 0;
 		// for each planet, then for each aspect, if aspect, add 1
 		if ( orbType == 0)
 		{
+//			for ( n = 0; n < 12; n++ )
+//				for ( m = n+1; m < 12; m++ )
+//					if ( n != m )
+//					{
+//						for ( o = 0; o < 7; o++ )	// aspect list
+//							if ( isAspect ( planet[n], planet[m], a[o], ao[aoIndex][o] ) )
+//								numAspects[o]++;
+//					}
 // will18_1 mod:
 // removed reference to MC
 			for ( n = 0; n < 11; n++ )
@@ -422,6 +435,8 @@ var orbValue = 0;
 							if ( isAspect ( planet[n], planet[m], a[o], ao[aoIndex][o] ) )
 								numAspects[o]++;
 					}
+
+	
 		}
 	else
 	{
@@ -435,10 +450,7 @@ var orbValue = 0;
 							numAspects[o]++;
 				}
 		for ( n = 0; n < 10; n++ )	// aspects from planets to Asc. and M.C.
-//			for ( m = 10; m < 12; m++ )
-// will18_3 mod
-// removed reference to MC (index=11)
-			for ( m = 10; m < 11; m++ )
+			for ( m = 10; m < 12; m++ )
 			{
 				orbValue = po[poIndex][n];
 				for ( o = 0; o < 7; o++ )
@@ -649,20 +661,20 @@ var orbValue = 0;
 			{
 				for ( n = 0; n < 7; n++ )
 				{
-					if ( isAspect ( planet[5], planet[ruler], a[n], ao[aoIndex][n] ))	// signRuler/Mars aspect
-						theme[11] += ps[5]*ps[ruler]*aspectStrength ( planet[6], planet[ruler], a[n], ao[aoIndex][n], af[n] );
+					if ( isAspect ( planet[5], planet[ruler], a[n], ao[aoIndex][n] ))	// Jupiter/Neptune aspect
+						theme[11] += ps[5]*ps[ruler]*aspectStrength ( planet[5], planet[ruler], a[n], ao[aoIndex][n], af[n] );
 				}
 			}
 			else
 			{
 				orbValue = 0.5*(po[poIndex][5]+po[poIndex][ruler]);
-				if ( isAspect ( planet[5], planet[ruler], a[n], orbValue ))	// signRuler/Mars aspect
+				if ( isAspect ( planet[5], planet[ruler], a[n], orbValue ))	// Jupiter/Neptune aspect
 					theme[11] += ps[5]*ps[ruler]*aspectStrength ( planet[5], planet[ruler], a[n], orbValue, af[n] );
 			}
 
 		}
 		else
-			calculateThemeValue ( 12, ruler, 1 );	// just use ancient ruler Saturn
+			calculateThemeValue ( 12, ruler, 1 );	// just use ancient ruler Jupiter
 		// Is the chart emphasis on water, mutable?
 		if ( tfDominant[1] == 3 )		// water dominant?
 			theme[11] += 1;
