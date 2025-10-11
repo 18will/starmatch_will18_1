@@ -25,23 +25,24 @@
         <div class="input-row">
           <div class="input-field">
             <label for="birth-date">Date</label>
-            <input type="date" id="birth-date" value="1974-09-11">
+        <input type="date" id="birth-date" value="1953-09-18">
             <small id="date-range-hint" style="font-size: 0.7rem; color: #8fa8ce; margin-top: 0.25rem; display: none;"></small>
           </div>
           <div class="input-field">
-            <label for="birth-time">Time (UTC)</label>
-            <input type="time" id="birth-time" value="14:14">
+            <label for="birth-time">Time (Local)</label>
+            <input type="time" id="birth-time" value="23:30">
+            <small style="font-size: 0.7rem; color: #8fa8ce;">Timezone auto-detected from location</small>
           </div>
         </div>
 
         <div class="input-row with-lookup">
           <div class="input-field">
             <label for="latitude">Lat</label>
-            <input type="number" id="latitude" min="-90" max="90" step="0.01" value="55.9221" placeholder="55.9221">
+            <input type="number" id="latitude" min="-90" max="90" step="0.01" value="51.5" placeholder="51.5">
           </div>
           <div class="input-field">
             <label for="longitude">Long</label>
-            <input type="number" id="longitude" min="-180" max="180" step="0.01" value="-3.1336" placeholder="-3.1336">
+            <input type="number" id="longitude" min="-180" max="180" step="0.01" value="0.01" placeholder="0.01">
           </div>
           <div class="input-field">
             <label>&nbsp;</label>
@@ -80,30 +81,42 @@
         <div class="setting-row">
           <label for="orb-type">Orb Type</label>
           <select id="orb-type">
-            <option value="0" selected>Aspect Orbs (Modern)</option>
-            <option value="1">Planet Orbs (Ancient)</option>
+            <option value="0" selected">Aspect Orbs (Modern)</option>
+            <option value="1">Planet Orbs (Ancient) )</option>
           </select>
         </div>
         
+<!-- only display this if orb-type ==  0 -->
         <div class="setting-row">
           <label for="aspect-orb-set">Aspect Orb Set</label>
           <select id="aspect-orb-set">
-            <option value="0" selected>Default</option>
-            <option value="1">Tight</option>
-            <option value="2">Wide (Astrotheme)</option>
-            <option value="3">Medium</option>
-            <option value="4">Very Tight</option>
+            <option value="0" selected>Modern</option>
+            <option value="1">Modern (wide)</option>
+            <option value="2">Natal (Astrotheme)</option>
+            <option value="3">Synastry (Astrotheme)</option>
+            <option value="4">Transit (Astrotheme)</option>
           </select>
         </div>
-        
+
+<!-- only display this if orb-type ==  1 -->
+	<div class="setting-row">
+          <label for="planet-orb-set">Planet Orb Set</label>
+          <select id="planet-orb-set">
+            <option value="0" selected>al-Biruni</option>
+            <option value="1">Lilly</option>
+            </select>
+        </div>
+<!-- end mod -->
+
         <div class="setting-row">
-          <label for="rulership-set">Rulership System</label>
+          <label for="rulership-set">Traditional Factors</label>
           <select id="rulership-set">
-            <option value="0" selected>Ancient Rulers</option>
-            <option value="4">Modern Rulers</option>
+            <option value="0">Ancient</option>
+            <option value="4" selected>Modern</option>
+            <option value="8">Alt. Modern</option>
           </select>
         </div>
-        
+       
         <div class="setting-row">
           <label>
             <input type="checkbox" id="precession-flag">
@@ -114,24 +127,43 @@
     </section>
 
     <section class="chart-visualisation">
-      <h3>Chart Wheel Visualization</h3>
+      <h3>Chart Wheel Visualisation</h3>
       <div class="canvas-container">
         <canvas id="chart-canvas" width="600" height="600"></canvas>
         <div id="chart-tooltip" class="chart-tooltip"></div>
       </div>
     </section>
 
+    <section class="aspect-grid-section">
+      <h3>Aspect Grid</h3>
+      <div class="aspect-grid-container">
+        <div id="aspect-grid" class="aspect-grid">
+          <div class="loading-message">Calculate a chart to view aspect grid...</div>
+        </div>
+      </div>
+    </section>
+
     <section class="results-container">
-      <div class="planetary-positions">
-        <h3>Planetary Positions</h3>
-        <div id="positions-display" class="positions-grid">
+      <div class="planetary-positions collapsible-section">
+        <div class="section-header">
+          <h3>Planetary Positions</h3>
+          <button class="collapse-toggle" data-target="positions-display" aria-label="Toggle planetary positions">
+            <span class="collapse-icon">▼</span>
+          </button>
+        </div>
+        <div id="positions-display" class="positions-grid collapsed">
           <div class="loading-message">Calculate a chart to view positions...</div>
         </div>
       </div>
 
-      <div class="theme-chart">
-        <h3>Theme Values (House/Sign Emphasis)</h3>
-        <div id="theme-bars" class="theme-bars-container">
+      <div class="theme-chart collapsible-section">
+        <div class="section-header">
+          <h3>Theme Values (House/Sign Emphasis)</h3>
+          <button class="collapse-toggle" data-target="theme-bars" aria-label="Toggle theme values">
+            <span class="collapse-icon">▼</span>
+          </button>
+        </div>
+        <div id="theme-bars" class="theme-bars-container collapsed">
           <div class="loading-message">Calculate a chart to view themes...</div>
         </div>
       </div>
@@ -173,7 +205,7 @@
       <div class="starmatch-container">
         <h3>Starmatch Comparison</h3>
         <p class="starmatch-description">
-          Compare two charts to analyze compatibility and thematic interactions.
+          Compare two charts to analyse compatibility and thematic interactions.
         </p>
         
         <div class="comparison-controls">
@@ -254,8 +286,30 @@
     </div>
   </div>
   <!-- Include dependencies -->
+  <script src="script/test/test-harness.js"></script>
+  <script src="script/constants.js"></script>
+  <script src="script/test/constants.test.js"></script>
+  <script src="script/storage-manager.js"></script>
+  <script src="script/migrate-storage.js"></script>
+  <script src="script/test/storage-manager.test.js"></script>
+  <script src="script/astronomical-calculations.js"></script>
+  <script src="script/test/astronomical-calculations.test.js"></script>
+  <script src="script/chart-renderer.js"></script>
+  <script src="script/test/chart-renderer.test.js"></script>
+  <script src="script/ui-manager.js"></script>
+  <script src="script/test/ui-manager.test.js"></script>
+  <script src="script/zodiac-utils.js"></script>
+  <script src="script/test/zodiac-utils.test.js"></script>
+  <script src="script/aspect-grid.js"></script>
+  <script src="script/spectrum-displays.js"></script>
+  <script src="script/comparison-chart-renderer.js"></script>
+  <script src="script/comparison-ui.js"></script>
   <script src="script/engine.js"></script>
   <script src="script/location-picker.js"></script>
+  <script src="script/timezone-helper.js"></script>
   <script src="script/starmatch-visualiser.js"></script>
+  <script src="script/comparison-engine.js"></script>
+  <script src="script/test/comparison-engine.test.js"></script>
+  <script src="script/self-test.js"></script>
 </body>
 </html>
