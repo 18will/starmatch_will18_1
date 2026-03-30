@@ -1,0 +1,41 @@
+modifications as of 13 March 2026
+
+1) ResearchOptions.txt (formatting, comments)
+
+2) starmatch.html
+
+3) engine.js (options. comments)
+
+4) starmatch-visualiser.js
+
+see comments at top of files
+
+
+problems:
+
+chart visualisation: ascendant and midheaven are in wrong place; no house cusps shown
+except 1st. (ascendant)
+
+values for your chart are
+Asc. 20 deg. 08' 07'' Capricorn
+MC 0 deg. 30' 54'' Sagittarius
+
+other planetary positions are correct but chart orientation is wrong.
+
+positions shown are decimal. astrological usage is deg. min sec
+
+
+display:
+
+the theme magnitudes need displaying as a contiguous vertically-oriented bar chart
+for clarity. not horizontally, as is. The theme value labels are numbers 1 to 12, not the
+sign names. The theme emphasis  is not by house/sign, this label should be removed.
+
+when selecting orb type ancient (i.e. using planetary orbs not aspect orbs), a switch
+
+from Lilly to al-Biruni has no effect - I suspect this change is not being picked up
+somewhere.
+
+
+load/save:
+appears to be non-functional

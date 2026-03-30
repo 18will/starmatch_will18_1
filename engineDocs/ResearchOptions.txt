@@ -14,51 +14,51 @@ aoindex	aspect orb value, degrees
 
 
 tfindex	Traditional Factors index
-Selects allocation of either ancient (default) or modern planets' traditional factors.
+Selects allocation of either ancient or modern (default) planets' traditional factors.
 
 Sign			Ancient allocations (index 0)
 			Ruler	Exaltation	Detriment	Fall
-Aries		Mars	Sun			Venus		Saturn
-Taurus		Venus	Moon		Mars		none
+Aries		Mars		Sun			Venus		Saturn
+Taurus		Venus	Moon		Mars			none
 Gemini		Mercury	none		Jupiter		none
 Cancer		Moon	Jupiter		Saturn		Mars
 Leo			Sun		none		Saturn		none
 Virgo		Mercury	Mercury		Jupiter		Venus
-Libra		Venus	Saturn		Mars		Sun
-Scorpio		Mars	none		Venus		Moon
+Libra		Venus	Saturn		Mars			Sun
+Scorpio		Mars		none		Venus		Moon
 Sagittarius	Jupiter	none		Mercury		none
-Capricorn	Saturn	Mars		Moon		Jupiter
-Aquarius	Saturn	none		Sun			none
+Capricorn		Saturn	Mars			Moon		Jupiter
+Aquarius		Saturn	none		Sun			none
 Pisces		Jupiter	Venus		Mercury		Mercury
 			
 Sign			Modern allocations (index 4)
 			Ruler	Exaltation	Detriment	Fall
-Aries		Mars	Pluto		Venus		Saturn
+Aries		Mars		Pluto		Venus		Saturn
 Taurus		Venus	Moon		Pluto		Uranus
 Gemini		Mercury	none		Jupiter		none
 Cancer		Moon	Jupiter		Saturn		Mars
 Leo			Sun		Neptune		Uranus		none
 Virgo		Mercury	Mercury		Neptune		Venus
-Libra		Venus	Saturn		Mars		Pluto
+Libra		Venus	Saturn		Mars			Pluto
 Scorpio		Pluto	Uranus		Venus		Moon
 Sagittarius	Jupiter	none		Mercury		none
-Capricorn	Saturn	Mars		Moon		Jupiter
-Aquarius	Uranus	none		Sun			Neptune
+Capricorn		Saturn	Mars			Moon		Jupiter
+Aquarius		Uranus	none		Sun			Neptune
 Pisces		Neptune	Venus		Mercury		Mercury
 
 Sign			Alternative Modern allocations (index 8)
 			Ruler	Exaltation	Detriment	Fall
-Aries		Mars	Sun			Venus		Saturn
+Aries		Mars		Sun			Venus		Saturn
 Taurus		Venus	Moon		Pluto		Uranus
 Gemini		Mercury	none		Jupiter		none
 Cancer		Moon	Neptune		Saturn		Mars
 Leo			Sun		Jupiter		Uranus		none
 Virgo		Mercury	Mercury		Neptune		Pluto
-Libra		Venus	Saturn		Mars		Sun
+Libra		Venus	Saturn		Mars			Sun
 Scorpio		Pluto	Uranus		Venus		Moon
 Sagittarius	Jupiter	none		Mercury		none
-Capricorn	Saturn	Mars		Moon		Neptune
-Aquarius	Uranus	none		Sun			none
+Capricorn		Saturn	Mars			Moon		Neptune
+Aquarius		Uranus	none		Sun			none
 Pisces		Neptune	Pluto		Mercury		Mercury
 
 
@@ -79,7 +79,7 @@ Sun			15		17
 Moon		12		12.5
 Mercury		7		7
 Venus		7		8
-Mars		7		8
+Mars			7		8
 Jupiter		9		12
 Saturn		9		10
 Uranus		5		5

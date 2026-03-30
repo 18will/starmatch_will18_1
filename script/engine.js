@@ -15,6 +15,7 @@
 // Program: twobob
 // Engine: Will 18
 // algorithm version: 6.2 - most recent changes since the twobob rewrite
+// 6.3 - rewrite to include MC but weighting set to zero - MC irrelevant to compatibility profile
 /* ******************************************************************************* */
 var rp = -1;	// ruling planet ( number )
 // AspectValues a: Conjunction, Opposition, Trine, Square, Sextile, Semi-square, Semi-sextile
@@ -27,17 +28,15 @@ var af = [1,0.5,0.3333,0.3536,0.2357,0.25,0.1667];	// FIXED
 /* aoIndex = 0 for default (offset into array): USER-EXTENSIBLE */
 /* Note: aspect orb sets 3,4,5 from 'Astrotheme.com: natal, synastry, transit */
 /* N.b. orbs traditionally have factors, applying to the planets not the aspects */
+var ao = [[9,9,7,7,5,3,3],[9,9,9,9,6,2,3],[10.8,10.0,8.3,7.5,5.7,2.5,1.5],[10,8,6,6,4.5,1,1],[2.6,2.5,2.3,2.3,1.3,1,1]];
+var aoIndex = 0;
 /* orbType: 0 = aspect orbs (modern), 1 = planet orbs (ancient) */
 var orbType = 0;
 /* planet orbs: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto */
 /* the outer three are modern additions - no asc. or MC aspects considered */
-var po = [[15,12,7,7,8,9,9,5,5,5],[17,12.5,7,8,7.5,12,10,5,5,5]];
-/* poIndex = 0, 1 (al-Biruni, Lilly) */
-var poIndex = 0;
-/* ao index 0: modern, 1: modern(wide), 2: natal, 3: synastry, 4: transit */
-/* index data for index 2,3,4 from astrotheme.com/astrology_aspects */
-var ao = [[9,9,7,7,5,3,3],[9,9,9,9,6,2,3],[10.5,10.0,8.3,7.8,6.1,1.5,1.0],[10,8,6,6,4.5,1,1],[2.6,2.5,2.3,2.3,1.3,1,1]];
-var aoIndex = 0;
+var po = [[15,12,7,7,7,9,9,5,5,5],[17,12.5,7,8,8,12,10,5,5,5]];
+/* poIndex = 0, 1 (Lilly, al-Biruni) */
+var poIndex = 1;
 /* Traditional factors (ancient/modern): [signNum[ruler],[exaltation],[detriment],[fall]] */
 /* tfIndex = 0 for ancient, 4 for modern, 8 for alternative modern (offset into array): USER-EXTENSIBLE */
 /* Planet indices: Sun=0, Moon=1, Mercury=2, Venus=3, Mars=4, Jupiter=5, Saturn=6, Uranus=7, Neptune=8, Pluto=9 */
@@ -63,7 +62,8 @@ var tfDominant = [0,0,0];	// INTERNAL
 /* planet strength [planetNum,...]  - arbitrary value for contribution to event occurrence */
 // will18_2 mod:
 // we should possibly remove psRT[11] since the MC is no longer used
-var psRT = [1,1,1,1,1,1,1,1,1,1,1,1];	// INTERNAL
+// 6.3 - MC preserved but nulled
+var psRT = [1,1,1,1,1,1,1,1,1,1,1,0];	// INTERNAL
 var precessionFlag = 0;	// true, precess position data before theme calculation
 var precessedTheme = [0,0,0,0,0,0,0,0,0,0,0,0];
 var nativityYear=0;	// KLUDGE - needs to supply birth year!
@@ -195,7 +195,7 @@ var orbValue = 0;
 		Does this make an astrological Aries (outside the sidereal system) a Pisces?
 		Precession of equinoxes gives great circle of approx. 25772 years. First point of
 		Aries defined in 130 BCE by Hipparchus.
-		Current first point of Aries is thus 360*(currentYear+130)/25772, or about 0 Pisces.
+		Current first point of Aries is thus 360*(currentYear+130)/25772, or about 0 Pisces at engine origination
 		*/
 		function precession ( year )
 		{
@@ -332,16 +332,18 @@ var orbValue = 0;
 		var numPlanets = 0;
 		var numStrong = 0;
 		/* Planetary positions */
-//		var planet = [fSun,fMoon,fMercury,fVenus,fMars,fJupiter,fSaturn,fUranus,fNeptune,fPluto,fAscendant,fMidheaven];
+		var planet = [fSun,fMoon,fMercury,fVenus,fMars,fJupiter,fSaturn,fUranus,fNeptune,fPluto,fAscendant,fMidheaven];
 // will18_1 mod:
 // removed refence to MC
-		var planet = [fSun,fMoon,fMercury,fVenus,fMars,fJupiter,fSaturn,fUranus,fNeptune,fPluto,fAscendant];
+		// MC resored in 6.3 but weighting nulled
+//		var planet = [fSun,fMoon,fMercury,fVenus,fMars,fJupiter,fSaturn,fUranus,fNeptune,fPluto,fAscendant];
 	
 		// algorithm main starts here
 		var m,n,o;	// loop vars.
 		var k,tmp;
 // will18_2 mod:
 // possibly we should remove ps[11] as the MC is no longer used
+// 6.3 - MC preserved but unused in compatibility calculations (nil contribution to 'fit')
 		var ps = [0,0,0,0,0,0,0,0,0,0,0,0];
 		// initialise theme array
 		for ( n = 0; n < 12; n++ )
@@ -365,6 +367,8 @@ var orbValue = 0;
 //		for ( n = 0; n <12; n++)	// for all planets, Asc., M.C.	
 // will18_1 mod:
 // removed reference to MC
+// 6.3 it is not obvious whether this should contribute weighting to numTradFactors
+//		for ( n = 0; n <12; n++)	// for all planets, Asc.
 		for ( n = 0; n <11; n++)	// for all planets, Asc.
 		{
 			k = signNum ( planet[n] )
@@ -661,20 +665,20 @@ var orbValue = 0;
 			{
 				for ( n = 0; n < 7; n++ )
 				{
-					if ( isAspect ( planet[5], planet[ruler], a[n], ao[aoIndex][n] ))	// Jupiter/Neptune aspect
-						theme[11] += ps[5]*ps[ruler]*aspectStrength ( planet[5], planet[ruler], a[n], ao[aoIndex][n], af[n] );
+					if ( isAspect ( planet[5], planet[ruler], a[n], ao[aoIndex][n] ))	// signRuler/Mars aspect
+						theme[11] += ps[5]*ps[ruler]*aspectStrength ( planet[6], planet[ruler], a[n], ao[aoIndex][n], af[n] );
 				}
 			}
 			else
 			{
 				orbValue = 0.5*(po[poIndex][5]+po[poIndex][ruler]);
-				if ( isAspect ( planet[5], planet[ruler], a[n], orbValue ))	// Jupiter/Neptune aspect
+				if ( isAspect ( planet[5], planet[ruler], a[n], orbValue ))	// signRuler/Mars aspect
 					theme[11] += ps[5]*ps[ruler]*aspectStrength ( planet[5], planet[ruler], a[n], orbValue, af[n] );
 			}
 
 		}
 		else
-			calculateThemeValue ( 12, ruler, 1 );	// just use ancient ruler Jupiter
+			calculateThemeValue ( 12, ruler, 1 );	// just use ancient ruler Saturn
 		// Is the chart emphasis on water, mutable?
 		if ( tfDominant[1] == 3 )		// water dominant?
 			theme[11] += 1;
